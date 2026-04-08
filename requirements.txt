@@ -1,0 +1,17 @@
+blinker            
+charset-normalizer 
+click              
+colorama           
+Flask              
+Flask-WTF          
+h11                
+itsdangerous      
+Jinja2            
+MarkupSafe        
+pillow             
+pip               
+PyPDF2            
+reportlab         
+uvicorn           
+Werkzeug           
+WTForms            
