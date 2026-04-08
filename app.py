@@ -4,11 +4,23 @@ from flask_wtf import FlaskForm
 from wtforms import StringField, SubmitField, SelectField
 from wtforms.validators import DataRequired
 import os
+import tempfile
+import secrets
 from pdf_modifier import modify_pdf
 
 app = Flask(__name__)
-app.config['SECRET_KEY'] = '98582278'
-app.config['UPLOAD_FOLDER'] = './uploads/'
+
+# Load SECRET_KEY from environment for security; if missing, generate an ephemeral one
+secret_key = os.environ.get('SECRET_KEY')
+if not secret_key:
+  # Ephemeral secret for local/dev only. Set SECRET_KEY in the environment for production.
+  secret_key = secrets.token_hex(32)
+app.config['SECRET_KEY'] = secret_key
+
+# Use a writable temporary directory (serverless platforms like Vercel have a read-only filesystem)
+tmp_upload_dir = os.path.join(tempfile.gettempdir(), 'pdf_protector_uploads')
+os.makedirs(tmp_upload_dir, exist_ok=True)
+app.config['UPLOAD_FOLDER'] = tmp_upload_dir
 
 class CPFInputForm(FlaskForm):
   cpf = StringField('CPF', validators=[DataRequired()])
