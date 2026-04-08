@@ -14,4 +14,4 @@ PyPDF2
 reportlab         
 uvicorn           
 Werkzeug           
-WTForms            
+WTForms
